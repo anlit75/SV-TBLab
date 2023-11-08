@@ -1,0 +1,166 @@
+# //  Questa Sim
+# //  Version 10.7c linux Aug 17 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading project test
+# reading /opt/mentor/questasim10.7/questasim/linux/../modelsim.ini
+# Loading project lab1
+# Compile of router_io.sv was successful.
+# Compile of router_test_top.sv was successful.
+# Compile of test.sv was successful.
+# Compile of router.v was successful.
+# 4 compiles, 0 failed with no errors.
+vsim -novopt work.router_test_top
+# vsim -novopt work.router_test_top 
+# Start time: 17:04:46 on Nov 07,2023
+# ** Error (suppressible): (vsim-12110) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Error loading design
+# End time: 17:04:47 on Nov 07,2023, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 0
+vsim -voptargs=+acc -classdebug work.router_test_top
+# vsim -voptargs="+acc" -classdebug work.router_test_top 
+# Start time: 17:06:10 on Nov 07,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading sv_std.std
+# Loading work.router_test_top(fast)
+# Loading work.router(fast)
+# Loading work.rtslice(fast)
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'frame_n'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'valid_n'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'din'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'dout'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'busy_n'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'valido_n'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (1) for port 'frameo_n'. The port definition is at: /home/icstudy/Project/lab1/router.v(31).
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/dut File: /home/icstudy/Project/lab1/router_test_top.sv Line: 22
+# Compile of router_io.sv was successful.
+# Compile of router_test_top.sv was successful.
+# Compile of test.sv was successful.
+# Compile of router.v was successful.
+# 4 compiles, 0 failed with no errors.
+vsim -voptargs=+acc -classdebug work.router_test_top
+# End time: 19:26:58 on Nov 07,2023, Elapsed time: 2:20:48
+# Errors: 0, Warnings: 7
+# vsim -voptargs="+acc" -classdebug work.router_test_top 
+# Start time: 19:26:58 on Nov 07,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.router_test_top(fast)
+# Loading work.router_io(fast)
+# ** Error (suppressible): (vsim-3009) [TSCALE] - Module 'router_io' does not have a timeunit/timeprecision specification in effect, but other modules do.
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/top_io File: /home/icstudy/Project/lab1/router_io.sv
+# Loading work.test(fast)
+# ** Error (suppressible): (vsim-3009) [TSCALE] - Module 'test' does not have a timeunit/timeprecision specification in effect, but other modules do.
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/t File: /home/icstudy/Project/lab1/test.sv
+# Loading work.router(fast)
+# Loading work.rtslice(fast)
+# Error loading design
+# End time: 19:27:02 on Nov 07,2023, Elapsed time: 0:00:04
+# Errors: 2, Warnings: 0
+vsim -novopt work.router_test_top
+# vsim -novopt work.router_test_top 
+# Start time: 19:29:06 on Nov 07,2023
+# ** Error (suppressible): (vsim-12110) All optimizations are disabled because the -novopt option is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features, please see the User's Manual section on Preserving Object Visibility with vopt. -novopt option is now deprecated and will be removed in future releases.
+# Error loading design
+# End time: 19:29:06 on Nov 07,2023, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0
+vsim -voptargs=+acc -classdebug work.router_test_top
+# vsim -voptargs="+acc" -classdebug work.router_test_top 
+# Start time: 19:29:19 on Nov 07,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.router_test_top(fast)
+# Loading work.router_io(fast)
+# ** Error (suppressible): (vsim-3009) [TSCALE] - Module 'router_io' does not have a timeunit/timeprecision specification in effect, but other modules do.
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/top_io File: /home/icstudy/Project/lab1/router_io.sv
+# Loading work.test(fast)
+# ** Error (suppressible): (vsim-3009) [TSCALE] - Module 'test' does not have a timeunit/timeprecision specification in effect, but other modules do.
+#    Time: 0 ns  Iteration: 0  Instance: /router_test_top/t File: /home/icstudy/Project/lab1/test.sv
+# Loading work.router(fast)
+# Loading work.rtslice(fast)
+# Error loading design
+# End time: 19:29:23 on Nov 07,2023, Elapsed time: 0:00:04
+# Errors: 2, Warnings: 0
+# Compile of router_io.sv was successful.
+# Compile of router_test_top.sv was successful.
+# Compile of test.sv was successful.
+# Compile of router.v was successful.
+# 4 compiles, 0 failed with no errors.
+vsim -voptargs=+acc -classdebug work.router_test_top
+# vsim -voptargs="+acc" -classdebug work.router_test_top 
+# Start time: 19:30:06 on Nov 07,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.router_test_top(fast)
+# Loading work.router_io(fast)
+# Loading work.test(fast)
+# Loading work.router(fast)
+# Loading work.rtslice(fast)
+add wave -position insertpoint  \
+sim:/router_test_top/top_io/clock \
+sim:/router_test_top/top_io/reset_n \
+sim:/router_test_top/top_io/din \
+sim:/router_test_top/top_io/frame_n \
+sim:/router_test_top/top_io/valid_n \
+sim:/router_test_top/top_io/dout \
+sim:/router_test_top/top_io/valido_n \
+sim:/router_test_top/top_io/busy_n \
+sim:/router_test_top/top_io/frameo_n
+run
+write format wave -window .main_pane.wave.interior.cs.body.pw.wf /home/icstudy/Project/lab1/wave.do
+add dataflow  \
+sim:/router_test_top/top_io/reset_n
+# No drivers or ports for reset_n
+add wave -position end  sim:/router_test_top/dut/reset_n
+restart
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading work.router_test_top(fast)
+# Loading work.router_io(fast)
+# Loading work.test(fast)
+# Loading work.router(fast)
+# Loading work.rtslice(fast)
+# Compile of router_io.sv was successful.
+# Compile of router_test_top.sv was successful.
+# Compile of test.sv was successful.
+# Compile of router.v was successful.
+# 4 compiles, 0 failed with no errors.
+# Compile of router_io.sv was successful.
+# Compile of router_test_top.sv was successful.
+# Compile of test.sv was successful.
+# Compile of router.v was successful.
+# 4 compiles, 0 failed with no errors.
+vsim -voptargs=+acc -classdebug work.router_test_top
+# End time: 19:44:19 on Nov 07,2023, Elapsed time: 0:14:13
+# Errors: 0, Warnings: 1
+# vsim -voptargs="+acc" -classdebug work.router_test_top 
+# Start time: 19:44:19 on Nov 07,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.router_test_top(fast)
+# Loading work.router_io(fast)
+# Loading work.test(fast)
+# Loading work.router(fast)
+# Loading work.rtslice(fast)
+# ** Warning: (vsim-PLI-3003) [TOFD] - System task or function '$vcdpluson' is not defined.
+#    Time: 0 ps  Iteration: 0  Instance: /router_test_top/t File: /home/icstudy/Project/lab1/test.sv Line: 20
+run
+# Lab 1: build a testbench!
+# ** Error (suppressible): (vsim-12023) Cannot execute undefined system task/function '$vcdpluson'
+#    Time: 0 ps  Iteration: 1  Process: /router_test_top/t/#INITIAL#19 File: /home/icstudy/Project/lab1/test.sv Line: 20
+# Compile of test.sv was successful.
