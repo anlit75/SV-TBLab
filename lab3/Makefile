@@ -30,7 +30,6 @@ debug:
 
 copy:
 	cp ../lab2/*.sv .
-	cp ../lab2/*.v .
 
 solution: clean
 	cp ../../solutions/lab3/*.sv .
