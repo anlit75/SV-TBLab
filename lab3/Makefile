@@ -1,6 +1,6 @@
 # Makefile for SystemVerilog Lab3
-RTL= ../../rtl/router.v
-BADRTL= ../../rtl/bad/router.v
+RTL= ../rtl/router.v
+BADRTL= ../rtl/bad/router.v
 SVTB = ./router_test_top.sv ./router_io.sv ./test.sv
 SEED = 1
 
@@ -11,13 +11,13 @@ test: compile run
 bad: compile_bad run
 
 run:
-	./simv -l simv.log +ntb_random_seed=$(SEED)
+	vsim -voptargs=+acc -classdebug -sv_seed $(SEED) work.router_test_top
 
 compile:
-	vcs -l vcs.log -sverilog -debug_all $(SVTB) $(RTL)
+	vlog -sv $(SVTB) $(RTL)
 
 compile_bad:
-	vcs -l vcs.log -sverilog -debug_all $(SVTB) $(BADRTL)
+	vlog -sv $(SVTB) $(BADRTL)
 
 template:
 	ntb_template -t router -c clock ../../rtl/router.v
@@ -29,11 +29,8 @@ debug:
 	./simv -l simv.log -gui -tbug +ntb_random_seed=$(SEED)
 
 copy:
-	cp ../../solutions/lab2/*.sv .
-	cp ../../solutions/lab3/test.sv.orig test.sv
-
-mycopy:
 	cp ../lab2/*.sv .
+	cp ../lab2/*.v .
 
 solution: clean
 	cp ../../solutions/lab3/*.sv .
@@ -61,10 +58,8 @@ help:
 	@echo  "                                                                        "
 	@echo  " -------------------- ADMINISTRATIVE TARGETS ---------------------------"
 	@echo  " help       => Displays this message.                                   "
-	@echo  " copy       => Copies lab files from previous working  directory        "
-	@echo  " mycopy     => Copies lab files from previous solution  directory       "
+	@echo  " copy       => Copies lab files from previous working directory         "
 	@echo  " solution   => Copies all files from current solutions directory        "
 	@echo  " nuke       => Erases all changes. Put all files back to original state "
 	@echo  "				     			                "
 	@echo ===========================================================================
-
