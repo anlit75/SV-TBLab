@@ -19,20 +19,8 @@ compile:
 compile_bad:
 	vlog -sv $(SVTB) $(BADRTL)
 
-template:
-	ntb_template -t router -c clock ../../rtl/router.v
-
-dve:
-	dve -vpd vcdplus.vpd &
-
-debug:
-	./simv -l simv.log -gui -tbug +ntb_random_seed=$(SEED)
-
 copy:
 	cp ../lab2/*.sv .
-
-solution: clean
-	cp ../../solutions/lab3/*.sv .
 
 clean:
 	rm -rf simv* csrc* *.tmp *.vpd *.key *.log *hdrs.h
@@ -50,15 +38,12 @@ help:
 	@echo  " bad        => Compiles TB and BAD DUT files, runs the simulation.      "
 	@echo  " compile    => Compiles the TB and DUT.                                 "
 	@echo  " run        => Runs the simulation.                                     "
-	@echo  " template   => Builds ntb templates                                     "
-	@echo  " dve        => Runs dve in post-processing mode                         "
-	@echo  " debug      => Runs simulation interactively with dve                   "
 	@echo  " clean      => Removes all intermediate simv and log files.             "
 	@echo  "                                                                        "
 	@echo  " -------------------- ADMINISTRATIVE TARGETS ---------------------------"
 	@echo  " help       => Displays this message.                                   "
 	@echo  " copy       => Copies lab files from previous working directory         "
-	@echo  " solution   => Copies all files from current solutions directory        "
 	@echo  " nuke       => Erases all changes. Put all files back to original state "
 	@echo  "				     			                "
 	@echo ===========================================================================
+
