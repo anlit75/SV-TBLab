@@ -1,6 +1,8 @@
 work
 *.mti
 *.mpf
-transcript
 *.wlf
+*.sch
+*.dbg
+transcript
 wave.do

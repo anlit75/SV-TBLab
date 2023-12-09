@@ -27,6 +27,9 @@ program automatic test(router_io.TB rtr_io);
   end
 
   initial begin: drv_tran_proc
+    $dumpfile("wave.vcd");
+    $dumpvars;
+
     // Lab 2 - Task 3, Step 1
     // 
     // Call gen() task

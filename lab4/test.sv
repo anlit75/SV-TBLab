@@ -39,6 +39,9 @@ program automatic test(router_io.TB rtr_io);
   end
 
   initial begin: drv_tran_proc
+    $dumpfile("wave.vcd");
+    $dumpvars;
+
     run_for_n_packets = 2000;
 
     repeat(run_for_n_packets) begin
