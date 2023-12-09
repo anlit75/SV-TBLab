@@ -4,14 +4,14 @@
 // Declare a program block with arguments to connect
 // to modport TB declared in interface
 program automatic test(router_io.TB rtr_io);
-  int run_for_n_packets; // number of packets to test  
+  int run_for_n_packets;           // number of packets to test  
 
   // Lab 2 - Task 2, Step 2
   // 
   // Declare program global variables
-  bit [3:0] sa;            // source address (input port)
-  bit [3:0] da;            // destination address (output port)
-  logic [7:0] payload[$];  // packet data array ([$] is a queue)
+  bit   [3:0] sa;                  // source address (input port)
+  bit   [3:0] da;                  // destination address (output port)
+  logic [7:0] payload[$];          // packet data array ([$] is a queue)
 
   // Lab 3 - Task 2, Step 2
   logic [7:0] pkt2cmp_payload[$];  // this queue store the data sampled from the DUT
@@ -39,6 +39,7 @@ program automatic test(router_io.TB rtr_io);
       // 
       // Call gen() task
       gen();
+      repeat(5) @(rtr_io.cb);
 
       // Lab 3 - Task 2, Step 3
       // 
@@ -60,6 +61,7 @@ program automatic test(router_io.TB rtr_io);
       // Call check() task
       check();
     end
+    repeat(10) @(rtr_io.cb);
   end
 
   // Lab 1 - Task 6, Step 2
@@ -69,7 +71,7 @@ program automatic test(router_io.TB rtr_io);
     rtr_io.reset_n = 1'b0;
     rtr_io.cb.frame_n <= '1;
     rtr_io.cb.valid_n <= '1;
-    #2 rtr_io.cb.reset_n <= 1'b1;
+    repeat(2) @(rtr_io.cb); rtr_io.cb.reset_n <= 1'b1;
     repeat(15) @(rtr_io.cb);
   endtask: reset
 
@@ -83,6 +85,10 @@ program automatic test(router_io.TB rtr_io);
     // $urandom_range(max, min=0): retrun unsigned int value in range min ~ max
     repeat($urandom_range(2, 4))
       payload.push_back($urandom);  // $urandom: retrun 32bits unsigned int value
+
+    $display("[GEN]%t sa = %0d, da = %0d", $realtime, sa, da);
+    foreach(payload[i])
+      $display("[GEN]%t payload[%0d] = %0d", $realtime, i, payload[i]);
   endtask: gen
 
   // Lab 2 - Task 4, Step 3 and 4
@@ -123,12 +129,11 @@ program automatic test(router_io.TB rtr_io);
       for (int i=0; i<8; i++) begin
         rtr_io.cb.din[sa] <= payload[idx][i];
         rtr_io.cb.valid_n[sa] <= 1'b0;
-        rtr_io.cb.frame_n[sa] <= (idx == payload.size()-1 && i == 7) ? 1'b1 : 1'b0;
+        rtr_io.cb.frame_n[sa] <= ((idx == (payload.size()-1)) && (i == 7));
         @(rtr_io.cb);
       end
     end
     rtr_io.cb.valid_n[sa] <= 1'b1;
-    @(rtr_io.cb);
   endtask: send_payload
 
   // Lab 3 - Task 3, Step 1 and 2
@@ -159,26 +164,26 @@ program automatic test(router_io.TB rtr_io);
             $finish;
           end          
         join_any: frameo_wd_timer
+        disable fork;
       end: wd_timer_fork
-      disable fork;
     join
 
     // Loop until output frame is detected
-    forever begin
+    forever begin: frameo_dct_loop
       logic [7:0] datum;
 
       // assemble a byte of data at a time (minimum of 8 clock cycles)
-      for (int i=0; i<8; i++) begin
+      for (int i=0; i<8; i=i) begin: store_datum
         if (!rtr_io.cb.valido_n[da]) begin
-          datum[i] = rtr_io.cb.dout[da];
+          datum[i++] = rtr_io.cb.dout[da];
         end
 
         // Store each 8-bit datum into queue
+        if (i == 8) pkt2cmp_payload.push_back(datum);
+
+        // Detect frameo_n[da]
         if (rtr_io.cb.frameo_n[da]) begin
-          if (i == 7) begin
-            pkt2cmp_payload.push_back(datum);
-            return;
-          end
+          if (i == 8) return;
           else begin
             $display("\n%m\n [ERROR] %t Packet payload not byte aligned ! \n", $realtime);
             $finish;
@@ -186,8 +191,8 @@ program automatic test(router_io.TB rtr_io);
         end
 
         @(rtr_io.cb);
-      end
-    end
+      end: store_datum
+    end: frameo_dct_loop
   endtask: get_payload
 
   // Lab 3 - Task 4, Step 1 ~ 2
