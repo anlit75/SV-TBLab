@@ -19,6 +19,9 @@ compile:
 compile_bad:
 	vlog -sv $(SVTB) $(BADRTL)
 
+debug:
+	vsim -debugDB work.router_test_top
+
 copy:
 	cp ../lab3/*.sv .
 
@@ -38,6 +41,7 @@ help:
 	@echo  " bad        => Compiles TB and BAD DUT files, runs the simulation.      "
 	@echo  " compile    => Compiles the TB and DUT.                                 "
 	@echo  " run        => Runs the simulation.                                     "
+	@echo  " debug      => Runs the simulation in debug mode.                       "
 	@echo  " clean      => Removes all intermediate simv and log files.             "
 	@echo  "                                                                        "
 	@echo  " -------------------- ADMINISTRATIVE TARGETS ---------------------------"
