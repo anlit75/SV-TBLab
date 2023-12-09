@@ -11,14 +11,14 @@ program automatic test(router_io.TB rtr_io);
   Packet pkt2send = new();
   Packet pkt2cmp = new();
 
-  int run_for_n_packets; // number of packets to test  
+  int run_for_n_packets;           // number of packets to test  
 
   // Lab 2 - Task 2, Step 2
   // 
   // Declare program global variables
-  bit [3:0] sa;            // source address (input port)
-  bit [3:0] da;            // destination address (output port)
-  logic [7:0] payload[$];  // packet data array ([$] is a queue)
+  bit   [3:0] sa;                  // source address (input port)
+  bit   [3:0] da;                  // destination address (output port)
+  logic [7:0] payload[$];          // packet data array ([$] is a queue)
 
   // Lab 3 - Task 2, Step 2
   logic [7:0] pkt2cmp_payload[$];  // this queue store the data sampled from the DUT
@@ -39,13 +39,14 @@ program automatic test(router_io.TB rtr_io);
   end
 
   initial begin: drv_tran_proc
-    run_for_n_packets = 200;
+    run_for_n_packets = 2000;
 
     repeat(run_for_n_packets) begin
       // Lab 2 - Task 3, Step 1
       // 
       // Call gen() task
       gen();
+      repeat(5) @(rtr_io.cb);
 
       // Lab 3 - Task 2, Step 3
       // 
@@ -86,7 +87,7 @@ program automatic test(router_io.TB rtr_io);
   // Modify gen() to generate packet objects
   task gen();
     static int pkts_generated = 0;
-    pkt2send.name = $sformatf("Packet[%0d]", pkts_generated);
+    pkt2send.name = $sformatf("Packet[%0d]", pkts_generated++);
 
     if (!pkt2send.randomize()) begin
       $display("\n%m\n[ERROR]%t Randomization Failed!", $realtime);
@@ -136,12 +137,11 @@ program automatic test(router_io.TB rtr_io);
       for (int i=0; i<8; i++) begin
         rtr_io.cb.din[sa] <= payload[idx][i];
         rtr_io.cb.valid_n[sa] <= 1'b0;
-        rtr_io.cb.frame_n[sa] <= (idx == (payload.size()-1) && i == 7);
+        rtr_io.cb.frame_n[sa] <= ((idx == (payload.size()-1)) && (i == 7));
         @(rtr_io.cb);
       end
     end
     rtr_io.cb.valid_n[sa] <= 1'b1;
-    @(rtr_io.cb);
   endtask: send_payload
 
   // Lab 4 - Task 10
@@ -172,7 +172,7 @@ program automatic test(router_io.TB rtr_io);
 
           // Thread 2: Routines timeout if a problem occurs
           begin
-            repeat(100) @(rtr_io.cb);
+            repeat(1000) @(rtr_io.cb);
             $display ("\n%m\n [ERROR] %t Frame signal timed out!\n", $realtime);
             $finish;
           end          
@@ -182,21 +182,21 @@ program automatic test(router_io.TB rtr_io);
     join
 
     // Loop until output frame is detected
-    forever begin
+    forever begin: frameo_dct_loop
       logic [7:0] datum;
 
       // assemble a byte of data at a time (minimum of 8 clock cycles)
-      for (int i=0; i<8; i++) begin
+      for (int i=0; i<8; i=i) begin: store_datum
         if (!rtr_io.cb.valido_n[da]) begin
-          datum[i] = rtr_io.cb.dout[da];
+          datum[i++] = rtr_io.cb.dout[da];
         end
 
         // Store each 8-bit datum into queue
+        if (i == 8) pkt2cmp_payload.push_back(datum);
+
+        // Detect frameo_n[da]
         if (rtr_io.cb.frameo_n[da]) begin
-          if (i == 7) begin
-            pkt2cmp_payload.push_back(datum);
-            return;
-          end
+          if (i == 8) return;
           else begin
             $display("\n%m\n [ERROR] %t Packet payload not byte aligned ! \n", $realtime);
             $finish;
@@ -204,8 +204,8 @@ program automatic test(router_io.TB rtr_io);
         end
 
         @(rtr_io.cb);
-      end
-    end
+      end: store_datum
+    end: frameo_dct_loop
   endtask: get_payload
 
   // Lab 4 - Task 11
@@ -217,6 +217,8 @@ program automatic test(router_io.TB rtr_io);
 
     if (!pkt2send.compare(pkt2cmp, msg)) begin
       $display ("\n%m\n [ERROR] %t Packet #%0d %s\n", $realtime, pkts_checked, msg);
+      pkt2send.display();
+      pkt2cmp.display();
       $finish;
     end
     else

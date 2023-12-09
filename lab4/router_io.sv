@@ -19,7 +19,7 @@ interface router_io(input bit clock);
   // 
   // Add input and output skew in clocking block(optional)
   clocking cb @(posedge clock);
-    default input #1ns output #1ns;  // Declare input & output skew
+    default input #1 output #1;  // Declare input & output skew
     output reset_n;
     output din;
     output frame_n;
